@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>#{helloworld.message}</title>
+
+    <h:outputStylesheet library="utils" name="estilo.css" />
+</h:head>
+
+<h:body>
+    <header style="text-align: center;">
+        <h:graphicImage library="utils" name="logo1.jpg"  />
+    </header>
+
+    <p:spacer height="20px" />
+
+    <h:form>
+        <p:commandButton value="Inserir novo usuário"
+                         action="#{helloworld.navigateCreate}" ajax="false" />
+
+        <p:commandButton value="Editar"
+                         action="#{helloworld.navigateUpdate}" ajax="false" />
+    </h:form>
+
+    <p:spacer height="5px" />
+
+    <h:form id="usuarioForm" styleClass="centrado">
+
+        <p:dataTable id="empresasDataTable" widgetVar="dataTable" value="#{helloworld.listaUsuarios}"
+                     var="user" emptyMessage="Nenhuma informação a ser exibida"
+                     paginator="true" rows="10" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                     rowsPerPageTemplate="5, 10, 20" selectionMode="single" rowKey="#{user.id}">
+
+            <p:column headerText="ID" sortBy="#{user.id}">
+                <h:outputText value="#{user.id}" />
+            </p:column>
+
+            <p:column headerText="Nome">
+                <h:outputText value="#{user.nome}" />
+            </p:column>
+
+            <p:column headerText="E-mail">
+                <h:outputText value="#{user.email}" />
+            </p:column>
+
+            <p:column headerText="CPF">
+                <h:outputText value="#{user.CPF}" />
+            </p:column>
+
+            <p:column headerText="Rua">
+                <h:outputText value="#{user.endereco.rua}" />
+            </p:column>
+
+            <p:column headerText="Cidade">
+                <h:outputText value="#{user.endereco.cidade}" />
+            </p:column>
+
+            <p:column headerText="UF">
+                <h:outputText value="#{user.endereco.UF}" />
+            </p:column>
+
+            <p:column>
+                <p:commandButton value="Excluir" action="#{helloworld.deleteUsuario(user.id)}"
+                                 update=":usuarioForm:formDialog" oncomplete="PF('dialog').show();" />
+            </p:column>
+
+        </p:dataTable>
+
+        <p:dialog header="Excluir usuario" widgetVar="dialog" resizable="false" id="formDialog">
+            <p:commandButton value="OK" oncomplete="window.location.reload();" />
+            <p:commandButton value="Cancelar" oncomplete="PF('dialog').hide()" />
+        </p:dialog>
+
+    </h:form>
+
+</h:body>
+</html>
